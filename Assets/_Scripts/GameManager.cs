@@ -1,16 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     public GameObject enemyPrefab;
-    public int score = 0;
     public List<EnemyController> enemies = new();
     private float enemySpacing = 1.0f;
     private Vector3 offScreenPosition = new(-10f, 6f, 0);
     private float enemyHeight;
+
+    public int score = 0;
+    public Text txtScore;
 
     private void Awake()
     {
@@ -179,6 +182,8 @@ public class GameManager : MonoBehaviour
     public void AddScore(int points)
     {
         score += points;
-        Debug.Log("Score: " + score);
+        txtScore.text = "Score: " + score.ToString();
+        //Debug.Log("Score: " + score);
     }
+
 }
