@@ -8,8 +8,9 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
     public GameObject enemyPrefab;
     public List<EnemyController> enemies = new();
-    private float enemySpacing = 1.0f;
     private Vector3 offScreenPosition = new(-10f, 6f, 0);
+    
+    private const float enemySpacing = 0.5f;
     private float enemyHeight;
 
     public int score = 0;
@@ -182,7 +183,7 @@ public class GameManager : MonoBehaviour
     public void AddScore(int points)
     {
         score += points;
-        txtScore.text = "Score: " + score.ToString();
+        txtScore.text = "Score\n" + score.ToString();
         //Debug.Log("Score: " + score);
     }
 

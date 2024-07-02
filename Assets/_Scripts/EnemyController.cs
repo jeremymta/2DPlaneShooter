@@ -5,10 +5,14 @@ public class EnemyController : MonoBehaviour
     public int health = 5;
     public Vector3 targetPosition;
 
+    private ScreenBounds screenBounds;
+
     private void Start()
     {
         // Set initial position to off-screen if needed
         targetPosition = transform.position;
+
+        screenBounds = GetComponent<ScreenBounds>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -34,7 +38,6 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-
     public void SetTargetPosition(Vector3 position)
     {
         targetPosition = position;
@@ -42,6 +45,7 @@ public class EnemyController : MonoBehaviour
 
     private void Update()
     {
+        targetPosition = screenBounds.ClampPosition(targetPosition);
         transform.position = Vector3.Lerp(transform.position, targetPosition, Time.deltaTime * 2f);
     }
 }
