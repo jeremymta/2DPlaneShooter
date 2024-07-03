@@ -5,6 +5,17 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public int health = 3;
+
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            GameManager.Instance.GameOver();
+        }
+    }    
+
     public float moveSpeed = 5f;
     public GameObject bulletPrefab;
     public float fireRate = 0.1f;
@@ -35,6 +46,17 @@ public class PlayerController : MonoBehaviour
 
         transform.position = targetPosition;  
 
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        //Debug.Log("Collision detected with: " + collision.gameObject.name);
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("Bullet hit player");
+            TakeDamage(1);
+            Destroy(collision.gameObject);
+        }
     }
 
     void Shoot()
