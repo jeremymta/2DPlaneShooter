@@ -5,23 +5,12 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public int health = 3;
-
-    public void TakeDamage(int damage)
-    {
-        health -= damage;
-        if (health <= 0)
-        {
-            GameManager.Instance.GameOver();
-        }
-    }    
-
-    public float moveSpeed = 5f;
-    public GameObject bulletPrefab;
-    public float fireRate = 0.1f;
-
+    protected int healthPlayer = 3;
+    protected float fireRate = 0.1f;
     private float nextFireTime;
 
+    protected float moveSpeed = 5f;
+    public GameObject bulletPrefab;
     private ScreenBounds screenBounds;
 
     private void Start()
@@ -29,13 +18,13 @@ public class PlayerController : MonoBehaviour
         screenBounds = GetComponent<ScreenBounds>();
     }
 
-    void Update()
+    private void Update()
     {
         MoveTowardsMouse();
         Shoot();
     }
 
-    void MoveTowardsMouse()
+    private void MoveTowardsMouse()
     {
         Vector3 mousePosition = Input.mousePosition;
         mousePosition = Camera.main.ScreenToWorldPoint(mousePosition);
@@ -48,18 +37,30 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void TakeDamage(int damage)
     {
-        //Debug.Log("Collision detected with: " + collision.gameObject.name);
-        if (collision.gameObject.CompareTag("Player"))
+        healthPlayer -= damage;
+        if (healthPlayer <= 0)
         {
-            Debug.Log("Bullet hit player");
-            TakeDamage(1);
-            Destroy(collision.gameObject);
+            GameManager.Instance.GameOver();
         }
     }
 
-    void Shoot()
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        //Debug.Log("Collision detected with: " + collision.gameObject.name);
+        if (collision.gameObject.CompareTag("BulletEnemy"))
+        {
+            Debug.Log("Collision detected with: " + collision.gameObject.name);
+            Debug.Log("BulletEnemy hit player");
+            TakeDamage(1);
+            Destroy(collision.gameObject);
+
+            Debug.Log("Player health: " + healthPlayer);
+        }
+    }
+
+    private void Shoot()
     {
         if (Input.GetMouseButton(0) && Time.time >= nextFireTime)
         {

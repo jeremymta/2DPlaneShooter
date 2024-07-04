@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    public int health = 5;
-    public Vector3 targetPosition;
+    protected int healthEnemy = 5;
+    protected Vector3 targetPosition;
+    protected float fireRate = 10f;
+    protected float nextFireTime;
 
     private ScreenBounds screenBounds;
-
     public GameObject enemyBulletPrefab;
-    public float fireRate = 10f;
-
-    private float nextFireTime;
 
     private void Start()
     {
@@ -26,19 +24,19 @@ public class EnemyController : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         //Debug.Log("Collision detected with: " + collision.gameObject.name);
-        if (collision.gameObject.CompareTag("Bullet"))
+        if (collision.gameObject.CompareTag("BulletPlayer"))
         {
-            //Debug.Log("Bullet hit enemy");
+            //Debug.Log("BulletPlayer hit enemy");
             TakeDamage(1);
             Destroy(collision.gameObject);
         }
     }
 
-    public void TakeDamage(int damage)
+    private void TakeDamage(int damage)
     {
-        health -= damage;
+        healthEnemy -= damage;
         //Debug.Log("Enemy health: " + health);
-        if (health <= 0)
+        if (healthEnemy <= 0)
         {
             GameManager.Instance.AddScore(1);
             Destroy(gameObject);
@@ -58,17 +56,18 @@ public class EnemyController : MonoBehaviour
         
         if (Time.time >= nextFireTime)
         {
-            Shoot();
+            FireEnemy();
             nextFireTime = Time.time + fireRate;
         }
     }
 
-    private void Shoot()
+    private void FireEnemy()
     {
         if (enemyBulletPrefab != null)
         {
             //Debug.Log("Spawning bullet");
             GameObject bullet =  Instantiate(enemyBulletPrefab, transform.position, Quaternion.identity);
+            bullet.tag = "BulletEnemy";
             if (bullet != null)
             {
                 bullet.GetComponent<BulletController>().SetDirection(Vector3.down);

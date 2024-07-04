@@ -11,13 +11,7 @@ public class BulletController : MonoBehaviour
     {
         transform.Translate(speed * Time.deltaTime * direction); 
 
-        //if (transform.position.y > 10)
-        //{
-        //    Destroy(gameObject);
-        //}
-        
         // Huy dan khi ra khoi man hinh
-
         if (!GetComponent<Renderer>().isVisible)
         {
             Destroy(gameObject);
