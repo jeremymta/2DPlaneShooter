@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    protected int healthPlayer = 3;
+    protected int healthPlayer = 2;
     protected float fireRate = 0.1f;
     private float nextFireTime;
 
@@ -40,23 +40,30 @@ public class PlayerController : MonoBehaviour
     private void TakeDamage(int damage)
     {
         healthPlayer -= damage;
-        if (healthPlayer <= 0)
+        
+        if (healthPlayer > 0)
         {
+            GameManager.Instance.UpdateLives(healthPlayer);
+        }
+        else
+        {
+            healthPlayer = 0;
+            GameManager.Instance.UpdateLives(healthPlayer); // Cap nhat so mang cuoi cung
             GameManager.Instance.GameOver();
+            
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //Debug.Log("Collision detected with: " + collision.gameObject.name);
         if (collision.gameObject.CompareTag("BulletEnemy"))
         {
-            Debug.Log("Collision detected with: " + collision.gameObject.name);
-            Debug.Log("BulletEnemy hit player");
+            //Debug.Log("Collision detected with: " + collision.gameObject.name);
+            //Debug.Log("BulletEnemy hit player");
             TakeDamage(1);
-            Destroy(collision.gameObject);
+            Destroy(collision.gameObject); // Huy dan cua Enemy 
 
-            Debug.Log("Player health: " + healthPlayer);
+            //Debug.Log("Player health: " + healthPlayer);
         }
     }
 

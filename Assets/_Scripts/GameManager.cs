@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using System;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,12 +11,23 @@ public class GameManager : MonoBehaviour
     public GameObject enemyPrefab;
     public List<EnemyController> enemies = new();
     private Vector3 offScreenPosition = new(-10f, 6f, 0);
-    
+
     private const float enemySpacing = 0.5f;
     private float enemyHeight;
 
     public int score = 0;
     public Text txtScore;
+    public Text txtLive;
+    public GameObject pnlEndGame;
+    public Text txtEndPoint;
+    public Button btnRestart;
+
+    public Sprite btnIdle;
+    public Sprite btnHover;
+    public Sprite btnClick;
+
+    public bool isEndGame;
+    private bool isStartFirstTime;
 
     private void Awake()
     {
@@ -31,6 +43,11 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        Time.timeScale = 1.0f; //0
+        isEndGame = false;
+        pnlEndGame.SetActive(false);
+        isStartFirstTime = true;
+
         GameObject tempEnemy = Instantiate(enemyPrefab, offScreenPosition, Quaternion.identity);
         SpriteRenderer spriteRenderer = tempEnemy.GetComponent<SpriteRenderer>();
         enemyHeight = spriteRenderer.bounds.size.y;
@@ -39,6 +56,29 @@ public class GameManager : MonoBehaviour
         SpawnEnemies();
         StartCoroutine(EnemyFormationSequence());
     }
+
+    private void Update()
+    {
+        if (isEndGame)
+        {
+            if (Input.GetMouseButtonDown(0) && isStartFirstTime)
+            {
+                //Load lai man choi
+                //Time.timeScale = 1;
+                //isEndGame = false ;
+
+                StartGane();
+            }
+        }
+        else
+        {
+            if (Input.GetMouseButtonDown(0) && Time.timeScale == 0)
+            {
+                Time.timeScale = 1;
+            }
+        }
+    }
+
 
     void SpawnEnemies()
     {
@@ -63,19 +103,28 @@ public class GameManager : MonoBehaviour
             SetRectangleFormation();
             yield return new WaitForSeconds(5f);
         }
-        
+
     }
 
     IEnumerator MoveEnemiesToSquareFormation()
     {
         yield return new WaitForSeconds(1f);
+
         float screenTop = Camera.main.orthographicSize;
         float yOffset = screenTop - enemyHeight / 2;
+
+        // 
+        float formationSize = enemySpacing * 3;
+
+        // 
+        float xCenter = 0f;
+        float xOffset = xCenter - formationSize / 2;
+
         for (int i = 0; i < enemies.Count; i++)
         {
             int row = i / 4;
             int col = i % 4;
-            Vector3 position = new(col * enemySpacing - 1.5f, yOffset - row * enemySpacing, 0);
+            Vector3 position = new Vector3(col * enemySpacing + xOffset, yOffset - row * enemySpacing, 0);
             enemies[i].SetTargetPosition(position);
         }
     }
@@ -188,9 +237,50 @@ public class GameManager : MonoBehaviour
         //Debug.Log("Score: " + score);
     }
 
+    public void UpdateLives(int lives)
+    {
+        //Debug.Log("Lives: " + lives);
+        txtLive.text = "Lives\n" + lives.ToString();
+    }
+
+    private void StartGane()
+    {
+        SceneManager.LoadScene(0);
+
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        // Khoi dong lai scene hien tai
+    }
+
+    public void ReStart()
+    {
+        Debug.Log("Test Restart");
+        StartGane();
+    }
+
+    public void RestartBottonClick()
+    {
+        btnRestart.GetComponent<Image>().sprite = btnClick;
+    }
+
+    public void RestartBottonHover()
+    {
+        btnRestart.GetComponent<Image>().sprite = btnHover;
+    }
+
+    public void RestartBottonIdle()
+    {
+        btnRestart.GetComponent<Image>().sprite = btnIdle;
+    }
+
     public void GameOver()
     {
-        //Debug.Log("Game Over");
+        Debug.Log("Game Over");
 
+        isEndGame = true;
+        isStartFirstTime = false;
+
+        Time.timeScale = 0; // Dung tat ca hd trong game
+        pnlEndGame.SetActive(true); //Hthi giao dien Endgame
+        txtEndPoint.text = "Your Score:\n" + score.ToString();
     }
 }
