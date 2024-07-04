@@ -110,13 +110,13 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
 
-        float screenTop = Camera.main.orthographicSize;
-        float yOffset = screenTop - enemyHeight / 2;
+        float screenTop = Camera.main.orthographicSize; // chieu cao cua man hinh
+        float yOffset = screenTop - enemyHeight / 2; // Khoang cach enemy voi screenTop
 
-        // 
+        // tong chieu rong/chieu cao cua hinh vuong
         float formationSize = enemySpacing * 3;
 
-        // 
+        // Tinh toan toa do bat dau cua hinh vuong
         float xCenter = 0f;
         float xOffset = xCenter - formationSize / 2;
 
@@ -133,18 +133,20 @@ public class GameManager : MonoBehaviour
     {
         float screenTop = Camera.main.orthographicSize;
         float yOffset = screenTop - enemyHeight / 2;
-        float xCenter = 0f;
-        float yCenter = yOffset - 2f * enemySpacing;
+        float xCenter = 0f; // toa do trung tam theo truc x cua man hinh
+        float yCenter = yOffset - 2f * enemySpacing; // toa do trung tam theo truc y cua hinh thoi
 
         int[] enemiesPerRow = { 1, 4, 6, 4, 1 };
         int enemyIndex = 0;
 
+        // vong lap dau tien duyet qua tung hang cua hinh thoi
         for (int row = 0; row < enemiesPerRow.Length; row++)
         {
             int enemiesInThisRow = enemiesPerRow[row];
             float rowWidth = (enemiesInThisRow - 1) * enemySpacing;
             float startX = xCenter - rowWidth / 2;
 
+            // Vong lap hai duyet qua tung cot cua hinh thoi
             for (int col = 0; col < enemiesInThisRow; col++)
             {
                 if (enemyIndex < enemies.Count)
