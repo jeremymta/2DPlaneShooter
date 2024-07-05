@@ -23,10 +23,8 @@ public class EnemyController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //Debug.Log("Collision detected with: " + collision.gameObject.name);
         if (collision.gameObject.CompareTag("BulletPlayer"))
         {
-            //Debug.Log("BulletPlayer hit enemy");
             TakeDamage(1);
             Destroy(collision.gameObject);
         }
@@ -35,12 +33,10 @@ public class EnemyController : MonoBehaviour
     private void TakeDamage(int damage)
     {
         healthEnemy -= damage;
-        //Debug.Log("Enemy health: " + health);
         if (healthEnemy <= 0)
         {
             GameManager.Instance.AddScore(1);
             Destroy(gameObject);
-            //Debug.Log("Enemy destroyed");
         }
     }
 
@@ -65,15 +61,12 @@ public class EnemyController : MonoBehaviour
     {
         if (enemyBulletPrefab != null)
         {
-            //Debug.Log("Spawning bullet");
             GameObject bullet =  Instantiate(enemyBulletPrefab, transform.position, Quaternion.identity);
             bullet.tag = "BulletEnemy";
             if (bullet != null)
             {
                 bullet.GetComponent<BulletController>().SetDirection(Vector3.down);
             }
-
         }
-
     }
 }

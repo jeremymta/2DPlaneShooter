@@ -55,7 +55,6 @@ public class GameManager : MonoBehaviour
 
         SpawnEnemies();
         StartCoroutine(EnemyFormationSequence());
-
     }
 
     private void Update()
@@ -230,28 +229,23 @@ public class GameManager : MonoBehaviour
     {
         score += points;
         txtScore.text = "Score\n" + score.ToString();
-        //Debug.Log("Score: " + score);
     }
 
     public void UpdateLives(int lives)
     {
-        //Debug.Log("Lives: " + lives);
         txtLive.text = "Lives\n" + lives.ToString();
     }
 
     private void StartGane()
     {
         //SceneManager.LoadScene(0);
-
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-        // Khoi dong lai scene hien tai
     }
 
     public void ReStart()
     {
         Debug.Log("Test Restart");
         StartGane();
-
         AudioManager.Instance.ResetMusic();
     }
 
@@ -272,8 +266,6 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        Debug.Log("Game Over");
-
         AudioManager.Instance.StopBackgroundMusic();
         AudioManager.Instance.PlayGameOverSound();
 

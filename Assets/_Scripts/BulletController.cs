@@ -22,5 +22,4 @@ public class BulletController : MonoBehaviour
     {
         direction = newDirection.normalized;
     }
-
 }
