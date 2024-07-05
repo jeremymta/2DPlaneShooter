@@ -55,6 +55,7 @@ public class GameManager : MonoBehaviour
 
         SpawnEnemies();
         StartCoroutine(EnemyFormationSequence());
+
     }
 
     private void Update()
@@ -63,10 +64,6 @@ public class GameManager : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0) && isStartFirstTime)
             {
-                //Load lai man choi
-                //Time.timeScale = 1;
-                //isEndGame = false ;
-
                 StartGane();
             }
         }
@@ -78,7 +75,6 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
 
     void SpawnEnemies()
     {
@@ -124,7 +120,7 @@ public class GameManager : MonoBehaviour
         {
             int row = i / 4;
             int col = i % 4;
-            Vector3 position = new Vector3(col * enemySpacing + xOffset, yOffset - row * enemySpacing, 0);
+            Vector3 position = new(col * enemySpacing + xOffset, yOffset - row * enemySpacing, 0);
             enemies[i].SetTargetPosition(position);
         }
     }
@@ -247,9 +243,9 @@ public class GameManager : MonoBehaviour
 
     private void StartGane()
     {
-        SceneManager.LoadScene(0);
+        //SceneManager.LoadScene(0);
 
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         // Khoi dong lai scene hien tai
     }
 
@@ -257,6 +253,8 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Test Restart");
         StartGane();
+
+        AudioManager.Instance.ResetMusic();
     }
 
     public void RestartBottonClick()
@@ -277,6 +275,9 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         Debug.Log("Game Over");
+
+        AudioManager.Instance.StopBackgroundMusic();
+        AudioManager.Instance.PlayGameOverSound();
 
         isEndGame = true;
         isStartFirstTime = false;
