@@ -40,7 +40,9 @@ public class PlayerController : MonoBehaviour
     private void TakeDamage(int damage)
     {
         healthPlayer -= damage;
-        
+
+        AudioManager.Instance.PlayPlayerHitSound();
+
         if (healthPlayer > 0)
         {
             GameManager.Instance.UpdateLives(healthPlayer);
@@ -50,7 +52,6 @@ public class PlayerController : MonoBehaviour
             healthPlayer = 0;
             GameManager.Instance.UpdateLives(healthPlayer); // Cap nhat so mang cuoi cung
             GameManager.Instance.GameOver();
-            
         }
     }
 
@@ -62,20 +63,22 @@ public class PlayerController : MonoBehaviour
             //Debug.Log("BulletEnemy hit player");
             TakeDamage(1);
             Destroy(collision.gameObject); // Huy dan cua Enemy 
-
-            //Debug.Log("Player health: " + healthPlayer);
         }
     }
 
     private void Shoot()
     {
+        
         if (Input.GetMouseButton(0) && Time.time >= nextFireTime)
         {
+            AudioManager.Instance.PlayShootSound();
+
             if (bulletPrefab != null)
             {
                 //Debug.Log("Spawning bullet");
                 Instantiate(bulletPrefab, transform.position, Quaternion.identity);
                 nextFireTime = Time.time + fireRate;
+                
             }
             else
             {
