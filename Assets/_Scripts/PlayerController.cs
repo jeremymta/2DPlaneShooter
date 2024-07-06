@@ -37,7 +37,7 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    private void TakeDamage(int damage)
+    private void TakeDamage(int damage) // Logic nhan sat thuong
     {
         healthPlayer -= damage;
 
@@ -62,7 +62,13 @@ public class PlayerController : MonoBehaviour
             //Debug.Log("Collision detected with: " + collision.gameObject.name);
             //Debug.Log("BulletEnemy hit player");
             TakeDamage(1);
-            Destroy(collision.gameObject); // Huy dan cua Enemy 
+            Destroy(collision.gameObject); // Huy dt dan cua Enemy 
+        }
+        else if (collision.gameObject.CompareTag("Enemy"))
+        {
+            //Debug.Log("Enemy hit player");
+            TakeDamage(1);
+            //Destroy(collision.gameObject); // Huy dt va cham voi player, trong TH nay la dt co the "Enemy"
         }
     }
 

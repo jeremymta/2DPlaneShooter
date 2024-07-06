@@ -30,12 +30,18 @@ public class EnemyController : MonoBehaviour
             TakeDamage(1);
             Destroy(collision.gameObject);
         }
+        else if (collision.gameObject.CompareTag("Player"))
+        {
+            //Debug.Log("Player hit Enemy");
+            TakeDamage(1); // Tru 1 healthEnemy (Takedame(n): trong do n la luong sat thuong)
+            //TakeDamage(healthEnemy); // Tru toan bo healthEnemy
+        }
     }
 
-    private void TakeDamage(int damage)
+    private void TakeDamage(int damage) // Logic nhan sat thuong
     {
         healthEnemy -= damage;
-        //Debug.Log("Enemy health: " + health);
+        //Debug.Log("Enemy health: " + healthEnemy);
         if (healthEnemy <= 0)
         {
             GameManager.Instance.AddScore(1);

@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3777178938095555832}
   m_Layer: 0
   m_Name: enemie
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -99,10 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db16bad5b96a49a4abff4521a80b32c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 5
-  targetPosition: {x: 0, y: 0, z: 0}
   enemyBulletPrefab: {fileID: 9215286569426118113, guid: b01aceef6426b0b4cbe23f324c83c177, type: 3}
-  fireRate: 10
 --- !u!114 &-3155138944256815731
 MonoBehaviour:
   m_ObjectHideFlags: 0

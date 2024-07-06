@@ -242,16 +242,14 @@ public class GameManager : MonoBehaviour
     private void StartGane()
     {
         //SceneManager.LoadScene(0);
-
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         // Khoi dong lai scene hien tai
     }
 
     public void ReStart()
     {
-        Debug.Log("Test Restart");
+        //Debug.Log("Test Restart");
         StartGane();
-
         AudioManager.Instance.ResetMusic();
     }
 
@@ -272,7 +270,7 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        Debug.Log("Game Over");
+        //Debug.Log("Game Over");
 
         AudioManager.Instance.StopBackgroundMusic();
         AudioManager.Instance.PlayGameOverSound();
