@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+
     public GameObject enemyPrefab;
     public List<EnemyController> enemies = new();
     private Vector3 offScreenPosition = new(-10f, 6f, 0);
@@ -15,6 +16,7 @@ public class GameManager : MonoBehaviour
     private const float enemySpacing = 0.5f;
     private float enemyHeight;
 
+    public List<GameObject> img_lives;
     public int score = 0;
     public Text txtScore;
     public Text txtLive;
@@ -29,6 +31,7 @@ public class GameManager : MonoBehaviour
     public bool isEndGame;
     private bool isStartFirstTime;
 
+    
     private void Awake()
     {
         if (Instance == null)
@@ -107,7 +110,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         float screenTop = Camera.main.orthographicSize;
-        float yOffset = screenTop - enemyHeight / 2;
+        float yOffset = screenTop - enemyHeight * 3 / 2;
 
         // 
         float formationSize = enemySpacing * 3;
@@ -128,7 +131,7 @@ public class GameManager : MonoBehaviour
     void SetDiamondFormation()
     {
         float screenTop = Camera.main.orthographicSize;
-        float yOffset = screenTop - enemyHeight / 2;
+        float yOffset = screenTop - enemyHeight * 3 / 2;
         float xCenter = 0f;
         float yCenter = yOffset - 2f * enemySpacing;
 
@@ -158,7 +161,7 @@ public class GameManager : MonoBehaviour
     void SetTriangleFormation()
     {
         float screenTop = Camera.main.orthographicSize;
-        float yOffset = screenTop - enemyHeight / 2;
+        float yOffset = screenTop - enemyHeight * 3 / 2;
         float xCenter = 0f;
 
         int baseEnemies = 9;
@@ -190,7 +193,7 @@ public class GameManager : MonoBehaviour
     void SetRectangleFormation()
     {
         float screenTop = Camera.main.orthographicSize;
-        float yOffset = screenTop - enemyHeight / 2;
+        float yOffset = screenTop - enemyHeight * 3 / 2;
         float xCenter = 0f;
 
         int width = 7;
@@ -238,6 +241,12 @@ public class GameManager : MonoBehaviour
         //Debug.Log("Lives: " + lives);
         txtLive.text = "Lives\n" + lives.ToString();
     }
+    public void LostLive()
+    {
+        //PlayerController.instance.healthPlayer
+        Debug.Log("Lost live");
+        img_lives[PlayerController.instance.healthPlayer].SetActive(false);
+    }
 
     private void StartGane()
     {
@@ -282,4 +291,5 @@ public class GameManager : MonoBehaviour
         pnlEndGame.SetActive(true); //Hthi giao dien Endgame
         txtEndPoint.text = "Your Score:\n" + score.ToString();
     }
+   
 }

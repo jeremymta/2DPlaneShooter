@@ -5,7 +5,23 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    protected int healthPlayer = 2;
+    public static PlayerController instance;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Debug.LogWarning("Only 1 Player allow to exist");
+            Destroy(gameObject);
+            return;
+        }
+    }
+
+    public int healthPlayer = 3;
     protected float fireRate = 0.1f;
     private float nextFireTime;
 
@@ -15,6 +31,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        //instance = this;
         screenBounds = GetComponent<ScreenBounds>();
     }
 
@@ -39,8 +56,9 @@ public class PlayerController : MonoBehaviour
 
     private void TakeDamage(int damage) // Logic nhan sat thuong
     {
+        
         healthPlayer -= damage;
-
+        GameManager.Instance.LostLive();
         AudioManager.Instance.PlayPlayerHitSound();
 
         if (healthPlayer > 0)
