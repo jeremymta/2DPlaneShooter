@@ -76,7 +76,7 @@ public class AudioManager : MonoBehaviour
         PlayBackgroundMusic();
     }
 
-    private void StopAllSounds()
+    public void StopAllSounds()
     {
         musicSource.Stop();
         effectsSource.Stop();

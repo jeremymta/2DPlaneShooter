@@ -74,18 +74,21 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("BulletEnemy"))
+        if (PlayerController.instance.healthPlayer > 0)
         {
-            //Debug.Log("Collision detected with: " + collision.gameObject.name);
-            //Debug.Log("BulletEnemy hit player");
-            TakeDamage(1);
-            Destroy(collision.gameObject); // Huy dt dan cua Enemy 
-        }
-        else if (collision.gameObject.CompareTag("Enemy"))
-        {
-            //Debug.Log("Enemy hit player");
-            TakeDamage(1);
-            //Destroy(collision.gameObject); // Huy dt va cham voi player, trong TH nay la dt co the "Enemy"
+            if (collision.gameObject.CompareTag("BulletEnemy"))
+            {
+                //Debug.Log("Collision detected with: " + collision.gameObject.name);
+                //Debug.Log("BulletEnemy hit player");
+                TakeDamage(1);
+                Destroy(collision.gameObject); // Huy dt dan cua Enemy 
+            }
+            else if (collision.gameObject.CompareTag("Enemy"))
+            {
+                //Debug.Log("Enemy hit player");
+                TakeDamage(1);
+                //Destroy(collision.gameObject); // Huy dt va cham voi player, trong TH nay la dt co the "Enemy"
+            }
         }
     }
 

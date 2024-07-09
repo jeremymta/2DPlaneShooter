@@ -33,18 +33,27 @@ public class GameManager : MonoBehaviour
     private bool isPaused = false;
 
     [SerializeField] private GameObject pausePanel;
+
     public void PauseGamebutton()
     {
-        pausePanel.SetActive(true);
-        Time.timeScale = 0f;
-        isPaused = true;
+        if (!isEndGame)
+        {
+            pausePanel.SetActive(true);
+            Time.timeScale = 0f;
+            isPaused = true;
+        }
+        
     }
 
     public void ResumeButton()
     {
-        pausePanel.SetActive(false);
-        Time.timeScale = 1f;
-        isPaused = false;
+        if (!isEndGame)
+        {
+            pausePanel.SetActive(false);
+            Time.timeScale = 1f;
+            isPaused = false;
+        }
+        
     }
 
     private void Awake()
@@ -58,9 +67,10 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
     void Start()
     {
+        AudioManager.Instance.PlayBackgroundMusic();
+
         Time.timeScale = 1.0f; //0
         isEndGame = false;
         pnlEndGame.SetActive(false);
@@ -88,7 +98,8 @@ public class GameManager : MonoBehaviour
         {
             if(Input.GetMouseButtonDown(0) && Time.timeScale == 0)
             {
-                Time.timeScale = 1;
+                //Time.timeScale = 1;
+                PauseGamebutton();
             }
         }
         //else
@@ -265,7 +276,7 @@ public class GameManager : MonoBehaviour
     public void LostLive()
     {
         //PlayerController.instance.healthPlayer
-        Debug.Log("Lost live");
+        //Debug.Log("Lost live " + PlayerController.instance.healthPlayer);
         img_lives[PlayerController.instance.healthPlayer].SetActive(false);
     }
 
@@ -310,7 +321,19 @@ public class GameManager : MonoBehaviour
 
         Time.timeScale = 0; // Dung tat ca hd trong game
         pnlEndGame.SetActive(true); //Hthi giao dien Endgame
+        //pausePanel.SetActive(false);
         txtEndPoint.text = "Your Score:\n" + score.ToString();
     }
-   
+
+    public void OptionsButton()
+    {
+        AudioManager.Instance.StopAllSounds();
+        SceneManager.LoadScene("MainMenu");
+        
+    }
+
+    public void QuitGameButton()
+    {
+        Application.Quit();
+    }
 }
