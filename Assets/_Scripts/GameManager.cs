@@ -30,8 +30,23 @@ public class GameManager : MonoBehaviour
 
     public bool isEndGame;
     private bool isStartFirstTime;
+    private bool isPaused = false;
 
-    
+    [SerializeField] private GameObject pausePanel;
+    public void PauseGamebutton()
+    {
+        pausePanel.SetActive(true);
+        Time.timeScale = 0f;
+        isPaused = true;
+    }
+
+    public void ResumeButton()
+    {
+        pausePanel.SetActive(false);
+        Time.timeScale = 1f;
+        isPaused = false;
+    }
+
     private void Awake()
     {
         if (Instance == null)
@@ -58,7 +73,6 @@ public class GameManager : MonoBehaviour
 
         SpawnEnemies();
         StartCoroutine(EnemyFormationSequence());
-
     }
 
     private void Update()
@@ -70,13 +84,20 @@ public class GameManager : MonoBehaviour
                 StartGane();
             }
         }
-        else
+        else if (!isPaused)
         {
-            if (Input.GetMouseButtonDown(0) && Time.timeScale == 0)
+            if(Input.GetMouseButtonDown(0) && Time.timeScale == 0)
             {
                 Time.timeScale = 1;
             }
         }
+        //else
+        //{
+        //    if (Input.GetMouseButtonDown(0) && Time.timeScale == 0)
+        //    {
+        //        Time.timeScale = 1;
+        //    }
+        //}
     }
 
     void SpawnEnemies()
