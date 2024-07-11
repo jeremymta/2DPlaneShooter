@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+    
 
     public GameObject enemyPrefab;
     public List<EnemyController> enemies = new();
@@ -19,6 +20,8 @@ public class GameManager : MonoBehaviour
     public List<GameObject> img_lives;
     public int score = 0;
     public Text txtScore;
+    public Text txtHighScore;
+    private int highScore;
     public Text txtLive;
     public GameObject pnlEndGame;
     public Text txtEndPoint;
@@ -83,6 +86,9 @@ public class GameManager : MonoBehaviour
 
         SpawnEnemies();
         StartCoroutine(EnemyFormationSequence());
+
+        highScore = PlayerPrefs.GetInt("HighScore", 0);
+        txtHighScore.text = "Best: " + highScore.ToString();
     }
 
     private void Update()
@@ -102,13 +108,7 @@ public class GameManager : MonoBehaviour
                 PauseGamebutton();
             }
         }
-        //else
-        //{
-        //    if (Input.GetMouseButtonDown(0) && Time.timeScale == 0)
-        //    {
-        //        Time.timeScale = 1;
-        //    }
-        //}
+        
     }
 
     void SpawnEnemies()
@@ -264,8 +264,16 @@ public class GameManager : MonoBehaviour
     public void AddScore(int points)
     {
         score += points;
-        txtScore.text = "Score\n" + score.ToString();
+        txtScore.text = "Score: " + score.ToString();
         //Debug.Log("Score: " + score);
+
+        if (score > highScore)
+        {
+            highScore = score;
+            txtHighScore.text = "Best: " + highScore.ToString();
+            PlayerPrefs.SetInt("HighScore", highScore);
+            PlayerPrefs.Save();
+        }
     }
 
     public void UpdateLives(int lives)
@@ -311,8 +319,6 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-        //Debug.Log("Game Over");
-
         AudioManager.Instance.StopBackgroundMusic();
         AudioManager.Instance.PlayGameOverSound();
 
@@ -323,6 +329,15 @@ public class GameManager : MonoBehaviour
         pnlEndGame.SetActive(true); //Hthi giao dien Endgame
         //pausePanel.SetActive(false);
         txtEndPoint.text = "Your Score:\n" + score.ToString();
+
+        if (score > highScore)
+        {
+            highScore = score;
+            PlayerPrefs.SetInt("HighScore", highScore);
+            PlayerPrefs.Save();
+        }
+
+        txtHighScore.text = "Best: " + highScore.ToString();
     }
 
     public void OptionsButton()
