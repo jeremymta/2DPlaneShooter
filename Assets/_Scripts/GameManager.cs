@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
     public int score = 0;
     public Text txtScore;
     public Text txtHighScore;
-    private int highScore;
+    private int highScore; // Save load qua Playerprefs
     public Text txtLive;
     public GameObject pnlEndGame;
     public Text txtEndPoint;
@@ -87,8 +87,8 @@ public class GameManager : MonoBehaviour
         SpawnEnemies();
         StartCoroutine(EnemyFormationSequence());
 
-        highScore = PlayerPrefs.GetInt("HighScore", 0);
-        txtHighScore.text = "Best: " + highScore.ToString();
+        highScore = PlayerPrefs.GetInt("HighScore", 0); // Tai du lieu
+        txtHighScore.text = "High Score: " + highScore.ToString();
     }
 
     private void Update()
@@ -264,14 +264,14 @@ public class GameManager : MonoBehaviour
     public void AddScore(int points)
     {
         score += points;
-        txtScore.text = "Score: " + score.ToString();
+        txtScore.text = "Score\n" + score.ToString();
         //Debug.Log("Score: " + score);
 
         if (score > highScore)
         {
             highScore = score;
-            txtHighScore.text = "Best: " + highScore.ToString();
-            PlayerPrefs.SetInt("HighScore", highScore);
+            txtHighScore.text = "High Score: " + highScore.ToString();
+            PlayerPrefs.SetInt("HighScore", highScore); //luu du lieu
             PlayerPrefs.Save();
         }
     }
@@ -333,13 +333,20 @@ public class GameManager : MonoBehaviour
         if (score > highScore)
         {
             highScore = score;
-            PlayerPrefs.SetInt("HighScore", highScore);
+            PlayerPrefs.SetInt("HighScore", highScore); // Luu du lieu
             PlayerPrefs.Save();
         }
 
-        txtHighScore.text = "Best: " + highScore.ToString();
+        txtHighScore.text = "High Score: " + highScore.ToString();
     }
 
+    public void ResetHighScore()
+    {
+        PlayerPrefs.DeleteKey("HighScore");
+        highScore = 0;
+        txtHighScore.text = "High Score: " + highScore.ToString();
+    }
+    
     public void OptionsButton()
     {
         AudioManager.Instance.StopAllSounds();

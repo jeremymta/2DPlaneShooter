@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AudioManager : MonoBehaviour
 {
@@ -11,6 +12,9 @@ public class AudioManager : MonoBehaviour
     public AudioClip playerHitSound;
     public AudioClip shootSound;
     public AudioClip gameOverSound;
+
+    public Slider musicSlider;
+    private float musicVolume;
 
     private void Awake()
     {
@@ -37,6 +41,18 @@ public class AudioManager : MonoBehaviour
     private void Start()
     {
         PlayBackgroundMusic();
+        musicVolume = PlayerPrefs.GetFloat("MusicVolume", 1f);
+        musicSlider.value = musicVolume;
+        musicSlider.onValueChanged.AddListener(SetMusicVolume);
+        SetMusicVolume(musicVolume);
+    }
+    public void SetMusicVolume(float volume)
+    {
+        musicVolume = volume;
+        musicSource.volume = musicVolume;
+
+        PlayerPrefs.SetFloat("MusicVolume", musicVolume);
+        PlayerPrefs.Save();
     }
 
     public void PlayBackgroundMusic()
