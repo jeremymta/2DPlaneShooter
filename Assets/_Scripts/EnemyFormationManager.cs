@@ -4,6 +4,20 @@ using UnityEngine;
 
 public class EnemyFormationManager : MonoBehaviour
 {
+    public static EnemyFormationManager Instance;
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     private const float enemySpacing = 0.5f;
     private float enemyHeight;
 
@@ -26,7 +40,6 @@ public class EnemyFormationManager : MonoBehaviour
         }
 
     }
-
 
     IEnumerator MoveEnemiesToSquareFormation(List<EnemyController> enemies)
     {
@@ -151,5 +164,4 @@ public class EnemyFormationManager : MonoBehaviour
             enemies[enemyIndex++].SetTargetPosition(new Vector3(startX + rectangleWidth, y, 0));
         }
     }
-
 }

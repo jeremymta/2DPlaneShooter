@@ -9,9 +9,9 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
+    //private EnemyFormationManager enemyFormationManager;
     private float enemyHeight;
-    private EnemyFormationManager enemyFormationManager;
-    
+
     public GameObject enemyPrefab;
     public List<EnemyController> enemies = new();
     private Vector3 offScreenPosition = new(-10f, 6f, 0);
@@ -41,26 +41,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Button saveHighScoreButton;
     [SerializeField] private Button resetHighScoreButton;
 
-    public void PauseGamebutton()
-    {
-        if (!isEndGame)
-        {
-            pausePanel.SetActive(true);
-            Time.timeScale = 0f;
-            isPaused = true;
-        }
-    }
-
-    public void ResumeButton()
-    {
-        if (!isEndGame)
-        {
-            pausePanel.SetActive(false);
-            Time.timeScale = 1f;
-            isPaused = false;
-        }
-    }
-
     private void Awake()
     {
         if (Instance == null)
@@ -74,9 +54,6 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
-        enemyFormationManager = gameObject.AddComponent<EnemyFormationManager>();
-        enemyFormationManager.Initialize(enemyHeight);
-
         AudioManager.Instance.PlayBackgroundMusic();
 
         Time.timeScale = 1.0f; //0
@@ -90,11 +67,14 @@ public class GameManager : MonoBehaviour
         enemyHeight = spriteRenderer.bounds.size.y;
         Destroy(tempEnemy);
 
-        enemyFormationManager = gameObject.AddComponent<EnemyFormationManager>();
-        enemyFormationManager.Initialize(enemyHeight);
+        //private EnemyFormationManager enemyFormationManager;
+        //enemyFormationManager = gameObject.AddComponent<EnemyFormationManager>();
+        //enemyFormationManager = EnemyFormationManager.Instance;
+        //enemyFormationManager.Initialize(enemyHeight);
+        EnemyFormationManager.Instance.Initialize(enemyHeight);
 
         SpawnEnemies();
-        StartCoroutine(enemyFormationManager.EnemyFormationSequence(enemies));
+        StartCoroutine(EnemyFormationManager.Instance.EnemyFormationSequence(enemies));
 
         highScore = PlayerPrefs.GetInt("HighScore", 0); // Tai du lieu
         highScorePlayer = PlayerPrefs.GetString("HighScorePlayer", "None");
@@ -261,7 +241,27 @@ public class GameManager : MonoBehaviour
         highScorePlayer = "None";
         txtHighScore.text = $"High Score:\n {highScorePlayer} - {highScore}";
     }
-    
+
+    public void PauseGamebutton()
+    {
+        if (!isEndGame)
+        {
+            pausePanel.SetActive(true);
+            Time.timeScale = 0f;
+            isPaused = true;
+        }
+    }
+
+    public void ResumeButton()
+    {
+        if (!isEndGame)
+        {
+            pausePanel.SetActive(false);
+            Time.timeScale = 1f;
+            isPaused = false;
+        }
+    }
+
     public void OptionsButton()
     {
         if (score >= highScore && nameInputField.gameObject.activeSelf && !isHighScoreSaved)
